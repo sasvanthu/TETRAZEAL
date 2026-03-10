@@ -9,6 +9,7 @@ import {
   FileText,
   Users,
   Settings,
+  Landmark,
   Zap,
   Sparkles,
   Calculator,
@@ -25,6 +26,10 @@ const navItems = [
   { name: 'Financial Literacy', path: '/training', icon: GraduationCap },
 
   { name: 'Smart Tools', path: '/tools', icon: LineChart },
+  { name: 'EMI Calculator', path: '/emi-calculator', icon: Calculator },
+  { name: 'Financial Score', path: '/financial-score', icon: BarChart3 },
+  { name: 'Analytics', path: '/analytics', icon: LineChart },
+  { name: 'Notifications', path: '/notifications', icon: Bell },
   { name: 'Gov Schemes', path: '/schemes', icon: Landmark },
   { name: 'Documents', path: '/documents', icon: FileText },
 

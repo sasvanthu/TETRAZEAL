@@ -8,6 +8,7 @@ import { Dashboard } from './pages/Dashboard';
 import { LoanManagement } from './pages/LoanManagement';
 import { FinancialLiteracy } from './pages/FinancialLiteracy';
 import { SmartTools } from './pages/SmartTools';
+import { GovSchemes } from './pages/GovSchemes';
 import { Documents } from './pages/Documents';
 import { Community } from './pages/Community';
 import { Settings } from './pages/Settings';
@@ -49,6 +50,9 @@ export default function App() {
             <Route path="/analytics" element={<Analytics />} />
 
             <Route path="/notifications" element={<Notifications />} />
+
+            <Route path="/schemes" element={<GovSchemes />} />
+
             <Route path="/documents" element={<Documents />} />
 
             <Route path="/community" element={<Community />} />

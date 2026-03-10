@@ -9,7 +9,6 @@ import {
   FileText, 
   Users, 
   Settings,
-  Landmark,
   Zap,
   Sparkles,
 } from 'lucide-react';
@@ -20,7 +19,6 @@ const navItems = [
   { name: 'Loan Management', path: '/loans', icon: Wallet },
   { name: 'Financial Literacy', path: '/training', icon: GraduationCap },
   { name: 'Smart Tools', path: '/tools', icon: LineChart },
-  { name: 'Gov Schemes', path: '/schemes', icon: Landmark },
   { name: 'Documents', path: '/documents', icon: FileText },
   { name: 'Community', path: '/community', icon: Users },
   { name: 'AI Advisor', path: '/ai-advisor', icon: Sparkles, highlight: true },

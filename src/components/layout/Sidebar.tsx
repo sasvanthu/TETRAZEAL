@@ -1,29 +1,48 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  LayoutDashboard, 
-  Wallet, 
-  GraduationCap, 
-  LineChart, 
-  FileText, 
-  Users, 
+import {
+  LayoutDashboard,
+  Wallet,
+  GraduationCap,
+  LineChart,
+  FileText,
+  Users,
   Settings,
   Landmark,
   Zap,
   Sparkles,
+  Calculator,
+  BarChart3,
+  Bell
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
 const navItems = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+
   { name: 'Loan Management', path: '/loans', icon: Wallet },
+
   { name: 'Financial Literacy', path: '/training', icon: GraduationCap },
+
   { name: 'Smart Tools', path: '/tools', icon: LineChart },
+
+  { name: 'EMI Calculator', path: '/emi-calculator', icon: Calculator },
+
+  { name: 'Financial Score', path: '/financial-score', icon: BarChart3 },
+
+  { name: 'Analytics', path: '/analytics', icon: LineChart },
+
+  { name: 'Notifications', path: '/notifications', icon: Bell },
+
   { name: 'Gov Schemes', path: '/schemes', icon: Landmark },
+
   { name: 'Documents', path: '/documents', icon: FileText },
+
   { name: 'Community', path: '/community', icon: Users },
+
   { name: 'AI Advisor', path: '/ai-advisor', icon: Sparkles, highlight: true },
+
   { name: 'Settings', path: '/settings', icon: Settings },
 ];
 

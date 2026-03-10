@@ -1,0 +1,5 @@
+{
+  "name": "SmartLoan Assist",
+  "description": "An integrated Loan Management and Financial Literacy Training Platform designed for small-scale entrepreneurs and rural business owners.",
+  "requestFramePermissions": ["microphone"]
+}

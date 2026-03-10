@@ -1,10 +1,17 @@
 import React from "react";
 
 export const Analytics = () => {
+
+  const income = 45000;
+  const expenses = 28000;
+  const savings = income - expenses;
+
+  const savingRate = Math.round((savings / income) * 100);
+
   return (
     <div className="text-white p-10">
 
-      {/* TITLE */}
+      {/* PAGE TITLE */}
 
       <h1 className="text-3xl font-bold mb-10">
         Financial Analytics
@@ -17,21 +24,21 @@ export const Analytics = () => {
         <div className="bg-slate-800 p-6 rounded-xl">
           <p className="text-slate-400 text-sm">Monthly Income</p>
           <h2 className="text-2xl font-bold text-emerald-400 mt-2">
-            ₹45,000
+            ₹{income.toLocaleString()}
           </h2>
         </div>
 
         <div className="bg-slate-800 p-6 rounded-xl">
           <p className="text-slate-400 text-sm">Monthly Expenses</p>
           <h2 className="text-2xl font-bold mt-2">
-            ₹28,000
+            ₹{expenses.toLocaleString()}
           </h2>
         </div>
 
         <div className="bg-slate-800 p-6 rounded-xl">
           <p className="text-slate-400 text-sm">Savings</p>
           <h2 className="text-2xl font-bold text-emerald-400 mt-2">
-            ₹17,000
+            ₹{savings.toLocaleString()}
           </h2>
         </div>
 
@@ -44,11 +51,41 @@ export const Analytics = () => {
 
       </div>
 
-      {/* FINANCIAL PERFORMANCE */}
+
+      {/* SAVING RATE SECTION */}
+
+      <div className="bg-slate-800 p-6 rounded-xl mb-10">
+
+        <h2 className="text-xl font-semibold mb-4">
+          Saving Rate
+        </h2>
+
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-slate-400">Your saving rate</p>
+          <p className="text-emerald-400 font-bold text-lg">
+            {savingRate}%
+          </p>
+        </div>
+
+        <div className="w-full bg-slate-700 h-3 rounded-full">
+          <div
+            className="bg-emerald-500 h-3 rounded-full"
+            style={{ width: `${savingRate}%` }}
+          ></div>
+        </div>
+
+        <p className="text-slate-400 text-sm mt-3">
+          A saving rate above 30% is considered excellent for financial stability.
+        </p>
+
+      </div>
+
+
+      {/* ANALYTICS SECTION */}
 
       <div className="grid grid-cols-2 gap-8">
 
-        {/* Income vs Expense */}
+        {/* INCOME VS EXPENSE */}
 
         <div className="bg-slate-800 p-6 rounded-xl">
 
@@ -80,7 +117,8 @@ export const Analytics = () => {
 
         </div>
 
-        {/* Loan Analytics */}
+
+        {/* LOAN ANALYTICS */}
 
         <div className="bg-slate-800 p-6 rounded-xl">
 
@@ -124,7 +162,8 @@ export const Analytics = () => {
 
       </div>
 
-      {/* SAVINGS INSIGHTS */}
+
+      {/* SAVINGS INSIGHT */}
 
       <div className="bg-slate-800 p-6 rounded-xl mt-10">
 
@@ -133,13 +172,16 @@ export const Analytics = () => {
         </h2>
 
         <p className="text-slate-300">
-          Based on your monthly income and expenses, you are saving
-          approximately
+          Based on your monthly income and expenses, you are saving approximately
           <span className="text-emerald-400 font-semibold">
-            {" "}₹17,000 per month.
+            {" "}₹{savings.toLocaleString()} per month.
           </span>
-          This is a healthy saving rate. Consider investing a portion of your
-          savings into long-term assets to grow your wealth.
+          This results in a saving rate of
+          <span className="text-emerald-400 font-semibold">
+            {" "} {savingRate}%.
+          </span>
+          Maintaining a saving rate above 30% helps build strong financial security
+          and allows investment opportunities for future business growth.
         </p>
 
       </div>

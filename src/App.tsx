@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { Layout } from "./components/layout/Layout";
 
@@ -21,43 +21,102 @@ import { Community } from "./pages/Community";
 import { AIAdvisor } from "./pages/AIAdvisor";
 import { Settings } from "./pages/Settings";
 
+const PrivateRoute = ({ children }: any) => {
+
+  const user = localStorage.getItem("loggedUser");
+
+  return user ? children : <Navigate to="/login" />;
+
+};
+
 export default function App() {
+
   return (
+
     <Router>
 
       <Routes>
 
-        {/* PUBLIC PAGES */}
+        {/* PUBLIC */}
 
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* DASHBOARD LAYOUT */}
+        {/* PROTECTED DASHBOARD */}
 
         <Route element={<Layout />}>
 
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/loans" element={<LoanManagement />} />
-          <Route path="/training" element={<FinancialLiteracy />} />
-          <Route path="/tools" element={<SmartTools />} />
+          <Route
+            path="/dashboard"
+            element={<PrivateRoute><Dashboard /></PrivateRoute>}
+          />
 
-          <Route path="/emi-calculator" element={<EMICalculator />} />
-          <Route path="/financial-score" element={<FinancialScore />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/notifications" element={<Notifications />} />
+          <Route
+            path="/loans"
+            element={<PrivateRoute><LoanManagement /></PrivateRoute>}
+          />
 
-          <Route path="/schemes" element={<GovSchemes />} />
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/community" element={<Community />} />
+          <Route
+            path="/training"
+            element={<PrivateRoute><FinancialLiteracy /></PrivateRoute>}
+          />
 
-          <Route path="/ai-advisor" element={<AIAdvisor />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/tools"
+            element={<PrivateRoute><SmartTools /></PrivateRoute>}
+          />
+
+          <Route
+            path="/emi-calculator"
+            element={<PrivateRoute><EMICalculator /></PrivateRoute>}
+          />
+
+          <Route
+            path="/financial-score"
+            element={<PrivateRoute><FinancialScore /></PrivateRoute>}
+          />
+
+          <Route
+            path="/analytics"
+            element={<PrivateRoute><Analytics /></PrivateRoute>}
+          />
+
+          <Route
+            path="/notifications"
+            element={<PrivateRoute><Notifications /></PrivateRoute>}
+          />
+
+          <Route
+            path="/schemes"
+            element={<PrivateRoute><GovSchemes /></PrivateRoute>}
+          />
+
+          <Route
+            path="/documents"
+            element={<PrivateRoute><Documents /></PrivateRoute>}
+          />
+
+          <Route
+            path="/community"
+            element={<PrivateRoute><Community /></PrivateRoute>}
+          />
+
+          <Route
+            path="/ai-advisor"
+            element={<PrivateRoute><AIAdvisor /></PrivateRoute>}
+          />
+
+          <Route
+            path="/settings"
+            element={<PrivateRoute><Settings /></PrivateRoute>}
+          />
 
         </Route>
 
       </Routes>
 
     </Router>
+
   );
 }

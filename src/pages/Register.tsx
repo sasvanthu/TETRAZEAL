@@ -1,12 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Register = () => {
 
   const navigate = useNavigate();
 
+  const [name,setName] = useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+
   const handleRegister = () => {
-    navigate("/dashboard");
+
+    const user = {
+      name,
+      email,
+      password
+    };
+
+    localStorage.setItem("user",JSON.stringify(user));
+
+    alert("Registration successful");
+
+    navigate("/login");
+
   };
 
   return (
@@ -24,18 +40,24 @@ export const Register = () => {
           <input
             type="text"
             placeholder="Full Name"
+            value={name}
+            onChange={(e)=>setName(e.target.value)}
             className="w-full p-3 rounded bg-slate-700"
           />
 
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
             className="w-full p-3 rounded bg-slate-700"
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
             className="w-full p-3 rounded bg-slate-700"
           />
 

@@ -58,17 +58,21 @@ export const Landing = () => {
           className="mt-24 grid w-full max-w-5xl gap-6 sm:grid-cols-3"
         >
           {[
-            { icon: TrendingUp, title: 'Smart Loan Management', desc: 'Track EMIs, compare bank offers, and manage your debt effectively.' },
-            { icon: GraduationCap, title: 'Financial Literacy', desc: 'Interactive 3D modules to learn budgeting, saving, and investing.' },
-            { icon: ShieldCheck, title: 'Govt. Scheme Explorer', desc: 'Find and apply for subsidies tailored to your business profile.' },
+            { icon: TrendingUp, title: 'Smart Loan Management', desc: 'Track EMIs, compare bank offers, and manage your debt effectively.', to: '/loans' },
+            { icon: GraduationCap, title: 'Financial Literacy', desc: 'Interactive 3D modules to learn budgeting, saving, and investing.', to: '/training' },
+            { icon: ShieldCheck, title: 'Govt. Scheme Explorer', desc: 'Find and apply for subsidies tailored to your business profile.', to: '/schemes' },
           ].map((feature, i) => (
-            <div key={i} className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-md transition-all hover:bg-white/10 hover:-translate-y-1">
+            <Link
+              key={i}
+              to={feature.to}
+              className="flex flex-col items-center rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-md transition-all hover:bg-white/10 hover:-translate-y-1"
+            >
               <div className="mb-4 rounded-full bg-indigo-500/20 p-4 text-indigo-400">
                 <feature.icon className="h-8 w-8" />
               </div>
               <h3 className="mb-2 text-lg font-semibold text-white">{feature.title}</h3>
               <p className="text-sm text-slate-400">{feature.desc}</p>
-            </div>
+            </Link>
           ))}
         </motion.div>
       </div>

@@ -5,6 +5,7 @@ import { AnimatedProgress } from '../components/ui/AnimatedProgress';
 import {
   Calculator, IndianRupee, Percent, Calendar, ArrowRight, Info,
   RefreshCw, Plus, X, CheckCircle2, AlertCircle, Wallet, Trash2,
+  ShieldCheck, Clock, FileText, TrendingUp, Target, Award
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts';
 import { api } from '../lib/api';
@@ -22,6 +23,22 @@ export const LoanManagement = () => {
   const [showNew, setShowNew] = useState(false);
   const [newLoan, setNewLoan] = useState({ lender_name: '', purpose: 'Working Capital', principal_amount: '', interest_rate: '', tenure_months: '', start_date: new Date().toISOString().slice(0, 10) });
   const [creating, setCreating] = useState(false);
+
+  // Eligibility Checker state
+  const [showEligibility, setShowEligibility] = useState(false);
+  const [eligibilityData, setEligibilityData] = useState({
+    monthly_income: '',
+    business_age: '',
+    credit_score: '',
+    existing_loans: '',
+    location: ''
+  });
+  const [eligibilityResult, setEligibilityResult] = useState<any>(null);
+  const [checkingEligibility, setCheckingEligibility] = useState(false);
+
+  // Application Status state
+  const [applications, setApplications] = useState<any[]>([]);
+  const [showApplicationStatus, setShowApplicationStatus] = useState(false);
 
   const toast = useToast();
 
@@ -90,6 +107,85 @@ export const LoanManagement = () => {
     if (status === 'closed') return 'text-slate-400 bg-slate-500/10 border-slate-500/20';
     return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
   };
+
+  // Eligibility Checker
+  const checkEligibility = async () => {
+    if (!eligibilityData.monthly_income || !eligibilityData.business_age || !eligibilityData.credit_score) {
+      toast.warning('Please fill all required fields');
+      return;
+    }
+
+    setCheckingEligibility(true);
+    try {
+      // Simulate eligibility check (in real app, this would call an API)
+      const income = parseFloat(eligibilityData.monthly_income);
+      const businessAge = parseInt(eligibilityData.business_age);
+      const creditScore = parseInt(eligibilityData.credit_score);
+      const existingLoans = parseFloat(eligibilityData.existing_loans || '0');
+
+      // Simple eligibility logic
+      const maxEMI = income * 0.4; // 40% of income for EMI
+      const eligibleAmount = Math.max(0, (maxEMI * 12 * 5) - existingLoans); // 5 year repayment
+
+      const schemes = [];
+      if (businessAge >= 1 && creditScore >= 650) {
+        schemes.push({ name: 'Mudra Loan', amount: Math.min(1000000, eligibleAmount), rate: 8.5 });
+      }
+      if (businessAge >= 3 && creditScore >= 700) {
+        schemes.push({ name: 'MSME Loan', amount: Math.min(5000000, eligibleAmount), rate: 9.5 });
+      }
+      if (businessAge >= 5 && creditScore >= 750) {
+        schemes.push({ name: 'Business Loan', amount: Math.min(10000000, eligibleAmount), rate: 10.5 });
+      }
+
+      setEligibilityResult({
+        eligible: eligibleAmount > 0,
+        maxAmount: eligibleAmount,
+        schemes: schemes,
+        riskLevel: creditScore >= 750 ? 'Low' : creditScore >= 650 ? 'Medium' : 'High'
+      });
+
+      toast.success('Eligibility check completed!');
+    } catch (error) {
+      toast.error('Failed to check eligibility');
+    } finally {
+      setCheckingEligibility(false);
+    }
+  };
+
+  // Load mock application data
+  useEffect(() => {
+    // Mock application data - in real app this would come from API
+    setApplications([
+      {
+        id: 1,
+        loanType: 'Mudra Loan',
+        amount: 500000,
+        status: 'approved',
+        appliedDate: '2024-03-01',
+        approvedDate: '2024-03-05',
+        disbursedDate: '2024-03-10',
+        remarks: 'Application approved. Documents verified.'
+      },
+      {
+        id: 2,
+        loanType: 'MSME Loan',
+        amount: 2000000,
+        status: 'under_review',
+        appliedDate: '2024-02-15',
+        remarks: 'Documents under verification. Additional KYC required.'
+      },
+      {
+        id: 3,
+        loanType: 'Business Loan',
+        amount: 1000000,
+        status: 'rejected',
+        appliedDate: '2024-01-20',
+        rejectedDate: '2024-02-01',
+        remarks: 'Credit score below threshold. Reapply after 6 months.'
+      }
+    ]);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -335,6 +431,212 @@ export const LoanManagement = () => {
             </div>
           </GlassCard>
         </div>
+      </div>
+
+      {/* Loan Eligibility Checker */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-white">Loan Eligibility Checker</h2>
+          <button
+            onClick={() => setShowEligibility(!showEligibility)}
+            className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            <Target className="h-4 w-4" />
+            {showEligibility ? 'Hide' : 'Check Eligibility'}
+          </button>
+        </div>
+
+        {showEligibility && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            {/* Eligibility Form */}
+            <GlassCard className="p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Enter Your Details</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm text-slate-400 mb-1">Monthly Income (₹)</label>
+                  <input
+                    type="number"
+                    value={eligibilityData.monthly_income}
+                    onChange={(e) => setEligibilityData(prev => ({ ...prev, monthly_income: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2"
+                    placeholder="50000"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-400 mb-1">Business Age (years)</label>
+                  <input
+                    type="number"
+                    value={eligibilityData.business_age}
+                    onChange={(e) => setEligibilityData(prev => ({ ...prev, business_age: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2"
+                    placeholder="2"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-400 mb-1">Credit Score</label>
+                  <input
+                    type="number"
+                    value={eligibilityData.credit_score}
+                    onChange={(e) => setEligibilityData(prev => ({ ...prev, credit_score: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2"
+                    placeholder="700"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-slate-400 mb-1">Existing Loan Amount (₹)</label>
+                  <input
+                    type="number"
+                    value={eligibilityData.existing_loans}
+                    onChange={(e) => setEligibilityData(prev => ({ ...prev, existing_loans: e.target.value }))}
+                    className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2"
+                    placeholder="0"
+                  />
+                </div>
+                <button
+                  onClick={checkEligibility}
+                  disabled={checkingEligibility}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded font-medium transition-colors disabled:opacity-50"
+                >
+                  {checkingEligibility ? 'Checking...' : 'Check Eligibility'}
+                </button>
+              </div>
+            </GlassCard>
+
+            {/* Eligibility Results */}
+            <GlassCard className="p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Eligibility Results</h3>
+              {eligibilityResult ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Award className="h-5 w-5 text-emerald-400" />
+                    <span className="text-white font-medium">
+                      {eligibilityResult.eligible ? 'Eligible' : 'Not Eligible'}
+                    </span>
+                  </div>
+
+                  <div className="bg-slate-800 p-3 rounded">
+                    <p className="text-slate-400 text-sm">Maximum Eligible Amount</p>
+                    <p className="text-emerald-400 text-xl font-bold">
+                      ₹{eligibilityResult.maxAmount.toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="bg-slate-800 p-3 rounded">
+                    <p className="text-slate-400 text-sm">Risk Level</p>
+                    <p className={`text-lg font-bold ${
+                      eligibilityResult.riskLevel === 'Low' ? 'text-emerald-400' :
+                      eligibilityResult.riskLevel === 'Medium' ? 'text-amber-400' : 'text-rose-400'
+                    }`}>
+                      {eligibilityResult.riskLevel}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-slate-400 text-sm mb-2">Available Schemes</p>
+                    <div className="space-y-2">
+                      {eligibilityResult.schemes.map((scheme: any, index: number) => (
+                        <div key={index} className="bg-slate-800 p-3 rounded flex justify-between items-center">
+                          <div>
+                            <p className="text-white font-medium">{scheme.name}</p>
+                            <p className="text-slate-400 text-sm">Up to ₹{scheme.amount.toLocaleString()}</p>
+                          </div>
+                          <span className="text-emerald-400 font-bold">{scheme.rate}%</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-slate-400 text-center py-8">
+                  Fill in your details and click "Check Eligibility" to see results
+                </p>
+              )}
+            </GlassCard>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Application Status */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-white">Loan Application Status</h2>
+          <button
+            onClick={() => setShowApplicationStatus(!showApplicationStatus)}
+            className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            <FileText className="h-4 w-4" />
+            {showApplicationStatus ? 'Hide' : 'View Status'}
+          </button>
+        </div>
+
+        {showApplicationStatus && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <GlassCard className="p-6">
+              <div className="space-y-4">
+                {applications.map((app) => (
+                  <div key={app.id} className="border border-slate-700 rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h4 className="text-white font-medium">{app.loanType}</h4>
+                        <p className="text-slate-400 text-sm">₹{app.amount.toLocaleString()}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {app.status === 'approved' && <CheckCircle2 className="h-5 w-5 text-emerald-400" />}
+                        {app.status === 'under_review' && <Clock className="h-5 w-5 text-amber-400" />}
+                        {app.status === 'rejected' && <AlertCircle className="h-5 w-5 text-rose-400" />}
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          app.status === 'approved' ? 'bg-emerald-500/20 text-emerald-400' :
+                          app.status === 'under_review' ? 'bg-amber-500/20 text-amber-400' :
+                          'bg-rose-500/20 text-rose-400'
+                        }`}>
+                          {app.status.replace('_', ' ').toUpperCase()}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <p className="text-slate-400">Applied</p>
+                        <p className="text-white">{new Date(app.appliedDate).toLocaleDateString()}</p>
+                      </div>
+                      {app.approvedDate && (
+                        <div>
+                          <p className="text-slate-400">Approved</p>
+                          <p className="text-white">{new Date(app.approvedDate).toLocaleDateString()}</p>
+                        </div>
+                      )}
+                      {app.disbursedDate && (
+                        <div>
+                          <p className="text-slate-400">Disbursed</p>
+                          <p className="text-white">{new Date(app.disbursedDate).toLocaleDateString()}</p>
+                        </div>
+                      )}
+                      {app.rejectedDate && (
+                        <div>
+                          <p className="text-slate-400">Rejected</p>
+                          <p className="text-white">{new Date(app.rejectedDate).toLocaleDateString()}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-3 p-3 bg-slate-800 rounded">
+                      <p className="text-slate-300 text-sm">{app.remarks}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
+          </motion.div>
+        )}
       </div>
     </div>
   );

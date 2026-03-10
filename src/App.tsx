@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { Layout } from "./components/layout/Layout";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 import { Landing } from "./pages/Landing";
 import { Login } from "./pages/Login";
@@ -11,6 +12,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { LoanManagement } from "./pages/LoanManagement";
 import { FinancialLiteracy } from "./pages/FinancialLiteracy";
 import { SmartTools } from "./pages/SmartTools";
+import { ExpenseTracker } from "./pages/ExpenseTracker";
 import { EMICalculator } from "./pages/EMICalculator";
 import { FinancialScore } from "./pages/FinancialScore";
 import { Analytics } from "./pages/Analytics";
@@ -32,20 +34,20 @@ const PrivateRoute = ({ children }: any) => {
 export default function App() {
 
   return (
+    <LanguageProvider>
+      <Router>
 
-    <Router>
+        <Routes>
 
-      <Routes>
+          {/* PUBLIC */}
 
-        {/* PUBLIC */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+          {/* PROTECTED DASHBOARD */}
 
-        {/* PROTECTED DASHBOARD */}
-
-        <Route element={<Layout />}>
+          <Route element={<Layout />}>
 
           <Route
             path="/dashboard"
@@ -68,13 +70,15 @@ export default function App() {
           />
 
           <Route
+            path="/expense-tracker"
+            element={<PrivateRoute><ExpenseTracker /></PrivateRoute>}
+          />
+
+          <Route
             path="/emi-calculator"
             element={<PrivateRoute><EMICalculator /></PrivateRoute>}
           />
 
-<<<<<<< HEAD
-            <Route path="/documents" element={<Documents />} />
-=======
           <Route
             path="/financial-score"
             element={<PrivateRoute><FinancialScore /></PrivateRoute>}
@@ -84,7 +88,6 @@ export default function App() {
             path="/analytics"
             element={<PrivateRoute><Analytics /></PrivateRoute>}
           />
->>>>>>> akila
 
           <Route
             path="/notifications"
@@ -121,6 +124,7 @@ export default function App() {
       </Routes>
 
     </Router>
+    </LanguageProvider>
 
   );
 }

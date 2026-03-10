@@ -1,5 +1,40 @@
 ﻿import React, { useState, useEffect } from "react";
-import { Sparkles, User, Mail, Phone, MapPin, LogOut } from "lucide-react";
+import { Sparkles, User, Mail, Phone, MapPin, LogOut, Globe } from "lucide-react";
+import { useLanguage } from "../contexts/LanguageContext";
+
+const LanguageSelector = () => {
+  const { language, setLanguage, t } = useLanguage();
+
+  const languages = [
+    { code: 'en', name: t('english'), flag: '🇺🇸' },
+    { code: 'hi', name: t('hindi'), flag: '🇮🇳' },
+    { code: 'ta', name: t('tamil'), flag: '🇮🇳' },
+    { code: 'te', name: t('telugu'), flag: '🇮🇳' },
+    { code: 'mr', name: t('marathi'), flag: '🇮🇳' },
+  ];
+
+  return (
+    <div className="space-y-3">
+      <p className="text-slate-400 text-sm">Choose your preferred language</p>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {languages.map((lang) => (
+          <button
+            key={lang.code}
+            onClick={() => setLanguage(lang.code as any)}
+            className={`p-3 rounded-lg border transition-all ${
+              language === lang.code
+                ? 'border-blue-500 bg-blue-500/20 text-blue-400'
+                : 'border-slate-600 bg-slate-700/50 hover:bg-slate-700'
+            }`}
+          >
+            <div className="text-2xl mb-1">{lang.flag}</div>
+            <div className="text-sm font-medium">{lang.name}</div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export const Settings = () => {
 
@@ -175,6 +210,16 @@ export const Settings = () => {
 
         </div>
 
+      </div>
+
+      {/* Language Settings */}
+      <div className="bg-slate-800 rounded-xl p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Globe className="text-blue-400" size={18} />
+          <h2 className="text-lg font-semibold">Language Settings</h2>
+        </div>
+
+        <LanguageSelector />
       </div>
 
       {/* AI Suggestions */}

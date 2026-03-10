@@ -15,27 +15,31 @@ import {
   BarChart3,
   Bell,
   LogOut,
-  Landmark
+  Landmark,
+  Receipt
 } from "lucide-react";
 import { cn } from "../../lib/utils";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const navItems = [
-  { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { name: "Loan Management", path: "/loans", icon: Wallet },
-  { name: "Financial Literacy", path: "/training", icon: GraduationCap },
-  { name: "Smart Tools", path: "/tools", icon: LineChart },
-  { name: "EMI Calculator", path: "/emi-calculator", icon: Calculator },
-  { name: "Financial Score", path: "/financial-score", icon: BarChart3 },
-  { name: "Analytics", path: "/analytics", icon: LineChart },
-  { name: "Notifications", path: "/notifications", icon: Bell },
-  { name: "Gov Schemes", path: "/schemes", icon: Landmark },
-  { name: "Documents", path: "/documents", icon: FileText },
-  { name: "Community", path: "/community", icon: Users },
-  { name: "AI Advisor", path: "/ai-advisor", icon: Sparkles },
-  { name: "Settings", path: "/settings", icon: Settings }
-];
+    { name: t("dashboard"), path: "/dashboard", icon: LayoutDashboard },
+    { name: t("loans"), path: "/loans", icon: Wallet },
+    { name: t("training"), path: "/training", icon: GraduationCap },
+    { name: t("tools"), path: "/tools", icon: LineChart },
+    { name: t("expense-tracker"), path: "/expense-tracker", icon: Receipt },
+    { name: t("emi-calculator"), path: "/emi-calculator", icon: Calculator },
+    { name: t("financial-score"), path: "/financial-score", icon: BarChart3 },
+    { name: t("analytics"), path: "/analytics", icon: LineChart },
+    { name: t("notifications"), path: "/notifications", icon: Bell },
+    { name: t("schemes"), path: "/schemes", icon: Landmark },
+    { name: t("documents"), path: "/documents", icon: FileText },
+    { name: t("community"), path: "/community", icon: Users },
+    { name: t("ai-advisor"), path: "/ai-advisor", icon: Sparkles },
+    { name: t("settings"), path: "/settings", icon: Settings }
+  ];
 
 export const Sidebar = () => {
+  const { t } = useLanguage();
 
   const user = JSON.parse(localStorage.getItem("loggedUser") || "{}");
 

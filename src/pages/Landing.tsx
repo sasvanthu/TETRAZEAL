@@ -32,7 +32,7 @@ export const Landing = () => {
           </h1>
           
           <p className="mx-auto mb-10 max-w-2xl text-lg text-slate-300 md:text-xl leading-relaxed">
-            Your intelligent partner for loan management, financial literacy, and business growth. Access government schemes, track EMIs, and learn to manage money better.
+            Your intelligent partner for loan management, financial literacy, and business growth. Track EMIs, improve financial readiness, and make better business decisions.
           </p>
           
           <div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-6 sm:space-y-0">
@@ -60,7 +60,7 @@ export const Landing = () => {
           {[
             { icon: TrendingUp, title: 'Smart Loan Management', desc: 'Track EMIs, compare bank offers, and manage your debt effectively.', to: '/loans' },
             { icon: GraduationCap, title: 'Financial Literacy', desc: 'Interactive 3D modules to learn budgeting, saving, and investing.', to: '/training' },
-            { icon: ShieldCheck, title: 'Govt. Scheme Explorer', desc: 'Find and apply for subsidies tailored to your business profile.', to: '/schemes' },
+            { icon: ShieldCheck, title: 'AI Financial Guidance', desc: 'Get personalized support for credit, repayment, and business decisions.', to: '/ai-advisor' },
           ].map((feature, i) => (
             <Link
               key={i}

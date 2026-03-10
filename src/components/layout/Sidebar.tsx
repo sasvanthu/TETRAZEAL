@@ -9,7 +9,9 @@ import {
   FileText, 
   Users, 
   Settings,
-  Landmark
+  Landmark,
+  Zap,
+  Sparkles,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -21,49 +23,62 @@ const navItems = [
   { name: 'Gov Schemes', path: '/schemes', icon: Landmark },
   { name: 'Documents', path: '/documents', icon: FileText },
   { name: 'Community', path: '/community', icon: Users },
+  { name: 'AI Advisor', path: '/ai-advisor', icon: Sparkles, highlight: true },
   { name: 'Settings', path: '/settings', icon: Settings },
 ];
 
 export const Sidebar = () => {
   return (
-    <div className="flex h-screen w-64 flex-col border-r border-white/10 bg-black/40 backdrop-blur-xl">
-      <div className="flex h-16 items-center justify-center border-b border-white/10 px-4">
-        <h1 className="bg-gradient-to-r from-emerald-400 to-indigo-500 bg-clip-text text-2xl font-bold text-transparent">
-          SmartLoan
+    <div className="flex h-screen w-64 shrink-0 flex-col border-r border-white/10 bg-black/40 backdrop-blur-xl">
+      <div className="flex h-16 items-center gap-2.5 border-b border-white/10 px-5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-indigo-600 shadow-[0_0_12px_rgba(16,185,129,0.4)]">
+          <Zap className="h-4 w-4 text-white" />
+        </div>
+        <h1 className="bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-xl font-bold text-transparent">
+          FinZeal
         </h1>
+        <span className="ml-auto rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
+          PRO
+        </span>
       </div>
       
-      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+      <nav className="flex-1 space-y-1 overflow-y-auto p-3">
         {navItems.map((item) => (
           <NavLink
             key={item.name}
             to={item.path}
             className={({ isActive }) =>
               cn(
-                'group flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
+                'group relative flex items-center rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200',
                 isActive
-                  ? 'bg-emerald-500/10 text-emerald-400 shadow-[inset_0_0_12px_rgba(16,185,129,0.2)]'
-                  : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-gradient-to-r from-emerald-500/15 to-indigo-500/10 text-emerald-400 shadow-[inset_0_0_12px_rgba(16,185,129,0.15)]'
+                  : (item as any).highlight
+                    ? 'text-indigo-300 hover:bg-indigo-500/10 hover:text-indigo-200'
+                    : 'text-slate-400 hover:bg-white/5 hover:text-slate-200'
               )
             }
           >
             {({ isActive }) => (
               <>
-                <item.icon
-                  className={cn(
-                    'mr-3 h-5 w-5 transition-colors',
-                    isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-white'
-                  )}
-                />
-                {item.name}
                 {isActive && (
                   <motion.div
                     layoutId="sidebar-indicator"
-                    className="absolute left-0 h-8 w-1 rounded-r-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"
                   />
+                )}
+                <item.icon
+                  className={cn(
+                    'mr-3 h-4 w-4 shrink-0 transition-colors',
+                    isActive
+                      ? 'text-emerald-400'
+                      : (item as any).highlight
+                        ? 'text-indigo-400 group-hover:text-indigo-300'
+                        : 'text-slate-500 group-hover:text-slate-300'
+                  )}
+                />
+                {item.name}
+                {(item as any).highlight && !isActive && (
+                  <span className="ml-auto rounded-full border border-indigo-500/30 bg-indigo-500/10 px-1.5 py-0.5 text-[9px] font-bold text-indigo-400">AI</span>
                 )}
               </>
             )}
@@ -71,14 +86,23 @@ export const Sidebar = () => {
         ))}
       </nav>
       
-      <div className="border-t border-white/10 p-4">
-        <div className="flex items-center rounded-xl bg-white/5 p-3">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(99,102,241,0.5)]">
-            JD
+      <div className="border-t border-white/10 p-3">
+        <div className="rounded-xl bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/20 p-3">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 shrink-0 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-[0_0_12px_rgba(99,102,241,0.4)]">
+              JS
+            </div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-white">John Sharma</p>
+              <p className="truncate text-xs text-indigo-300">Sharma General Store</p>
+            </div>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-white">John Doe</p>
-            <p className="text-xs text-slate-400">Entrepreneur</p>
+          <div className="mt-2.5 flex items-center justify-between">
+            <span className="text-xs text-slate-400">Decision Score</span>
+            <span className="text-xs font-bold text-emerald-400">85/100</span>
+          </div>
+          <div className="mt-1 h-1.5 w-full rounded-full bg-white/10">
+            <div className="h-full w-[85%] rounded-full bg-gradient-to-r from-emerald-500 to-indigo-500" />
           </div>
         </div>
       </div>
